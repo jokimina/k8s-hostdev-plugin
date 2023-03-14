@@ -21,7 +21,7 @@ spec:
       containers:
       - name: hostdev
         image: ccr.ccs.tencentyun.com/paas/hostdev:latest
-        args: ["--devs", "/dev/mem:r"]
+        args: ["--devs", "/dev/mem:r,/dev/sgx_provision:rwm,/dev/sgx_enclave:rwm"]
         securityContext:
           privileged: true
         volumeMounts:
