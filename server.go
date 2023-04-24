@@ -113,6 +113,8 @@ func (mgr *HostDevicePluginManager) RegisterToKubelet() error {
 var flagDevList = flag.String("devs", "",
 	"The list of devices seperated by comma. For example: /dev/mem:rwm,/dev/ecryptfs:r")
 
+var flagDevQuota = flag.Int("quota", 100, "The quota of devices")
+
 func ParseDevConfig(dev string) (*DevConfig, error) {
 	if dev == "" {
 		return nil, fmt.Errorf("Must have arg --devs , for example, --devs /dev/mem:rwm")
@@ -197,8 +199,9 @@ func NewHostDevicePlugin(devCfg *DevConfig) (*HostDevicePlugin, error) {
 		return nil, err
 	}
 
-	devs := []*pluginapi.Device{
-		&pluginapi.Device{ID: devCfg.DevName, Health: pluginapi.Healthy},
+	devs := make([]*pluginapi.Device, 0, 100)
+	for i := 0; i < *flagDevQuota; i++ {
+		devs = append(devs, &pluginapi.Device{ID: fmt.Sprintf("%s_%d", devCfg.DevName, i), Health: pluginapi.Healthy})
 	}
 
 	return &HostDevicePlugin{

@@ -5,7 +5,7 @@ BIN=k8s-hostdev-plugin
 
 # GCFLAGS ?= -x -gcflags="-N -l"
 
-all: bin 
+all: bin img push
 
 
 ${BIN}: main.go server.go watcher.go
