@@ -199,7 +199,7 @@ func NewHostDevicePlugin(devCfg *DevConfig) (*HostDevicePlugin, error) {
 		return nil, err
 	}
 
-	devs := make([]*pluginapi.Device, 0, 100)
+	devs := make([]*pluginapi.Device, 0, *flagDevQuota)
 	for i := 0; i < *flagDevQuota; i++ {
 		devs = append(devs, &pluginapi.Device{ID: fmt.Sprintf("%s_%d", devCfg.DevName, i), Health: pluginapi.Healthy})
 	}
